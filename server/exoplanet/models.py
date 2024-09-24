@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 def validate_no_special_character(str):
     if(not str.isalnum()):
         raise ValidationError("Special character not allowed!")
-    
+
 
 class Author(models.Model):
     name = models.CharField(primary_key=True, max_length=100, unique=True, error_messages={ "unique": "Already used!" }, validators=[validate_no_special_character])

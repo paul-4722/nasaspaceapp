@@ -60,13 +60,15 @@ class StarDetailedView(generics.GenericAPIView):
         else:
             if Author.objects.filter(name=user_name).count() == 0:
                 Author.objects.create(name=user_name)
-            author = Author.objects.filter(name=user_name)[0]
-            serializer = serializers.StarDetailedGetSerializer(star, data=request.data, partial=True)
-            if serializer.is_valid():
-                serializer.save(owned_by=author)
-                return Response({"star":serializer.data}, status=status.HTTP_202_ACCEPTED)
+                author = Author.objects.filter(name=user_name)[0]
+                serializer = serializers.StarDetailedGetSerializer(star, data=request.data, partial=True)
+                if serializer.is_valid():
+                    serializer.save(owned_by=author)
+                    return Response({"star":serializer.data}, status=status.HTTP_202_ACCEPTED)
+                else:
+                    return Response(status=status.HTTP_404_NOT_FOUND)
             else:
-                return Response(status=status.HTTP_404_NOT_FOUND)
+                return Response(status=status.HTTP_403_FORBIDDEN)
 
 
 class PlanetCreateView(generics.GenericAPIView):
