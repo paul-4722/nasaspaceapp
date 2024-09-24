@@ -18,7 +18,7 @@ class AuthorPostSerializer(serializers.ModelSerializer):
 class PlanetSimpleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Planet
-        fields = ["name", "size"]
+        fields = ["name", "size", "image"]
 
 
 class PlanetDetailedGetSerializer(serializers.ModelSerializer):
@@ -29,13 +29,13 @@ class PlanetDetailedGetSerializer(serializers.ModelSerializer):
     parent = StarSerializer()
     class Meta:
         model = Planet
-        fields = ["name", "size", "parent", "owned_by"]
+        fields = ["name", "size", "parent", "owned_by", "image"]
         
         
 class PlanetDetailedPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Planet
-        fields = ["name", "size"]
+        fields = ["name", "size", "image"]
 
 
 class StarSimpleSerializer(serializers.ModelSerializer):

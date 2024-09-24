@@ -4,7 +4,8 @@ from django.urls import path
 import exoplanet.views as views
 
 urlpatterns = [
-    path("main/", views.StarListView.as_view()),
+    path("main/", views.LandingView.as_view()), 
+    path("star/list", views.StarListView.as_view()),
     path("star/<int:pk>/", views.StarDetailedView.as_view()), 
     path("star/<int:pk>/create/", views.PlanetCreateView.as_view()), 
     path("planet/list/", views.PlanetListView.as_view()), 

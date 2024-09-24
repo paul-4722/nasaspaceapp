@@ -10,6 +10,10 @@ import exoplanet.serializers as serializers
 
 
 
+class LandingView(generics.GenericAPIView):
+    def get(self, request):
+        return Response(status=status.HTTP_200_OK)
+
 
 class PlanetListView(generics.GenericAPIView):
     def get_queryset(self):
@@ -17,7 +21,7 @@ class PlanetListView(generics.GenericAPIView):
 
     def get(self, request):
         planets = self.get_queryset()
-        serializer = serializers.PlanetDetailedSerializer(planets, many=True)
+        serializer = serializers.PlanetDetailedGetSerializer(planets, many=True)
         return Response({"planets":serializer.data}, status=status.HTTP_200_OK)
 
 

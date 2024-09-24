@@ -23,3 +23,4 @@ class Planet(models.Model):
     size = models.FloatField(name="size")
     parent = models.ForeignKey(Star, name="parent", on_delete=models.CASCADE, related_name="planets")
     owned_by = models.ForeignKey(Author, name="owned_by", blank=True, null=True, on_delete=models.SET_NULL, related_name="planets")
+    image = models.ImageField(blank=True, null=True)
