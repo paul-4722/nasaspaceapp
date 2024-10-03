@@ -11,8 +11,8 @@ urlpatterns = [
     path("star/<int:pk>/create/", views.PlanetCreateView.as_view()), 
     path("planet/list/<str:option>/", views.PlanetListView.as_view()), 
     path("planet/<int:pk>/", views.PlanetDetailedView.as_view()),
-    path("quest/<str:name>/", views.QuestListView.as_view()), 
-    path("quest/<str:name>/<int:number>/", views.QuestCompleteView.as_view()), 
+    path("quests/<str:name>/", views.QuestListView.as_view()), 
+    path("quests/<str:name>/<int:number>/", views.QuestCompleteView.as_view()), 
 ]
 
 '''
