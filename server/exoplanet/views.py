@@ -1,11 +1,10 @@
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.authtoken.models import Token
 from rest_framework.generics import get_object_or_404
-from django.contrib.auth import authenticate, login, logout
 
-from .models import Author, Star, Planet
+from .quests import quests
+from .models import Author, Star, Planet, Quest
 import exoplanet.serializers as serializers
 
 
@@ -16,14 +15,23 @@ class LandingView(generics.GenericAPIView):
 
 
 class PlanetListView(generics.GenericAPIView):
-    def get_queryset(self):
-        return Planet.objects.all()
+    def get_queryset(self, option):
+        if option == "normal":
+            return Planet.objects.all()
+        elif option == "original":
+            return Planet.objects.filter(created_by_user=False)
+        elif option == "user":
+            return Planet.objects.filter(created_by_user=True)
+        else:
+            return None
 
-    def get(self, request):
-        planets = self.get_queryset()
-        serializer = serializers.PlanetDetailedGetSerializer(planets, many=True)
-        return Response({"planets":serializer.data}, status=status.HTTP_200_OK)
-
+    def get(self, request, option):
+        planets = self.get_queryset(option)
+        if planets is not None:
+            serializer = serializers.PlanetDetailedGetSerializer(planets, many=True)
+            return Response({"planets":serializer.data}, status=status.HTTP_200_OK)
+        else:
+            return Response({"message":"Invalid option."}, status=status.HTTP_404_NOT_FOUND)
 
 class StarListView(generics.GenericAPIView):
     def get_queryset(self):
@@ -46,30 +54,48 @@ class StarDetailedView(generics.GenericAPIView):
         serializer = serializers.StarDetailedGetSerializer(star)
         return Response({"star":serializer.data})
 
+    def make_quest(self, author):
+        for quest in quests:
+            Quest.objects.create(
+                name = quest["name"], 
+                description = quest["description"], 
+                owned_by = author, 
+                completed = False
+            ) 
+    
     def post(self, request, pk):
         star = self.get_object(pk)
-        print(request.data)
         user_name = request.data["owned_by.name"]
+        user_password = request.data["owned_by.password"]
         if star.owned_by:
-            owner_name = star.owned_by.name
-            if owner_name == user_name:
-                serializer = serializers.StarDetailedGetSerializer(star)
-                return Response({"star":serializer.data}, status=status.HTTP_200_OK)
-            else:
-                return Response({"message":"Cannot change owner of the star."}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"message":"Cannot change owner of the star."}, status=status.HTTP_403_FORBIDDEN)
         else:
             if Author.objects.filter(name=user_name).count() == 0:
-                Author.objects.create(name=user_name)
+                Author.objects.create(name=user_name, password=user_password)
                 author = Author.objects.filter(name=user_name)[0]
                 serializer = serializers.StarDetailedGetSerializer(star, data=request.data, partial=True)
                 if serializer.is_valid():
                     serializer.save(owned_by=author)
+                    self.make_quest(author)
                     return Response({"star":serializer.data}, status=status.HTTP_202_ACCEPTED)
                 else:
                     return Response(status=status.HTTP_404_NOT_FOUND)
             else:
-                return Response(status=status.HTTP_403_FORBIDDEN)
+                return Response({"message":"Already used name. "}, status=status.HTTP_403_FORBIDDEN)
 
+
+class StarDetailedViewByAuthor(generics.GenericAPIView):
+    serializer_class = serializers.StarDetailedPostSerializer
+    
+    def get_object(self, name):
+        author = get_object_or_404(Author, name=name)
+        return get_object_or_404(Star, owned_by=author)
+    
+    def get(self, request, name):
+        star = self.get_object(name)  
+        serializer = serializers.StarDetailedGetSerializer(star)
+        return Response({"star":serializer.data})
+        
 
 class PlanetCreateView(generics.GenericAPIView):
     serializer_class = serializers.PlanetDetailedPostSerializer
@@ -88,7 +114,9 @@ class PlanetCreateView(generics.GenericAPIView):
         author = star.owned_by
         if author:
             if serializer.is_valid():
-                serializer.save(owned_by=author, parent=star)
+                serializer.save(owned_by=author, parent=star, created_by_user=True)
+                star.planets_number += 1
+                star.save()
                 return Response({"planet": serializer.data}, status=status.HTTP_201_CREATED)
             else:
                 return Response(status=status.HTTP_404_NOT_FOUND)
@@ -107,7 +135,27 @@ class PlanetDetailedView(generics.GenericAPIView):
         planet = self.get_object(pk)
         serializer = serializers.PlanetDetailedGetSerializer(planet)
         return Response({"planet":serializer.data}, status=status.HTTP_200_OK)
+
+
+class QuestListView(generics.GenericAPIView):
+    
+    def get_queryset(self, name):
+        author = get_object_or_404(Author, name=name)
+        return Quest.objects.filter(owned_by=author)
+    
+    def get(self, request, name):
+        quests = self.get_queryset(name)
+        serializer = serializers.QuestGetSerializer(quests, many=True)
+        return Response({"quests":serializer.data}, status=status.HTTP_200_OK)
     
 
+class QuestCompleteView(generics.GenericAPIView):
+    serializer_class = serializers.QuestPostSerializer
+    def get_object(self, name, number):
+        return Quest.objects.get(owned_by=name, number=number)
     
-    
+    def post(self, request, name, number):
+        quest = self.get_object(name, number)
+        quest.completed = True
+        quest.save()
+        return Response(status=status.HTTP_200_OK)

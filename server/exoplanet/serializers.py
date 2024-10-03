@@ -1,24 +1,24 @@
 from rest_framework import serializers
-from .models import Author, Planet, Star
+from .models import Author, Planet, Star, Quest
 
 
 class AuthorSerializer(serializers.ModelSerializer):
     name = serializers.CharField(allow_null=True)
     class Meta:
         model = Author
-        fields = ["name"]
+        fields = ["name", "password"]
 
 
 class AuthorPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
-        fields = ["name"]
+        fields = ["name", "password"]
 
 
 class PlanetSimpleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Planet
-        fields = ["name", "size", "image"]
+        fields = ["id", "name", "image"]
 
 
 class PlanetDetailedGetSerializer(serializers.ModelSerializer):
@@ -29,19 +29,19 @@ class PlanetDetailedGetSerializer(serializers.ModelSerializer):
     parent = StarSerializer()
     class Meta:
         model = Planet
-        fields = ["name", "size", "parent", "owned_by", "image"]
+        fields = ["id", "name", "parent", "owned_by", "created_by_user", "image", "semimajor_axis", "eccentricity", "mass", "radius", "magnetic_field", "albedo", "rotation_period", "atmospheric_pressure", "description"]
         
         
 class PlanetDetailedPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Planet
-        fields = ["name", "size", "image"]
+        fields = ["name", "image", "semimajor_axis", "eccentricity", "mass", "radius", "magnetic_field", "albedo", "rotation_period", "atmospheric_pressure", "description"]
 
 
 class StarSimpleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Star
-        fields = ["name", "size", "owned_by"]
+        fields = ["id", "name", "owned_by"]
 
 
 class StarDetailedGetSerializer(serializers.ModelSerializer):
@@ -49,7 +49,7 @@ class StarDetailedGetSerializer(serializers.ModelSerializer):
     owned_by = AuthorSerializer()
     class Meta:
         model = Star
-        fields = ["name", "size", "owned_by", "planets"]
+        fields = ["name", "owned_by", "planets_number", "spectral_type", "effective_temp", "mass", "radius", "description", "planets"]
 
 
 class StarDetailedPostSerializer(serializers.ModelSerializer):
@@ -57,3 +57,16 @@ class StarDetailedPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Star
         fields = ["owned_by"]
+
+
+class QuestGetSerializer(serializers.ModelSerializer):
+    owned_by = AuthorSerializer()
+    class Meta:
+        model = Quest
+        fields = ["number", "name", "owned_by", "completed", "description"]
+
+
+class QuestPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Quest
+        fields = []
