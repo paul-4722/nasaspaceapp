@@ -8,7 +8,7 @@ def validate_no_special_character(str):
         raise ValidationError("Special character not allowed!")
 
 def validate_string(str):
-    if(not str.isdecimal()):
+    if(str.isdecimal()):
         raise ValidationError("Should include at least one non-digit character.")
 
 class Author(models.Model):
@@ -18,14 +18,17 @@ class Author(models.Model):
 
 
 class Star(models.Model):
-     name = models.CharField(name="name", max_length=100, unique=True)
-     owned_by = models.ForeignKey(Author, name="owned_by", blank=True, null=True, on_delete=models.SET_NULL, related_name="stars")
-     planets_number = models.IntegerField(name="planets_number")
-     spectral_type = models.CharField(name="spectral_type", max_length=100)
-     effective_temp = models.FloatField(name="effective_temp")
-     mass = models.FloatField(name="mass")
-     radius = models.FloatField(name="radius")
-     description = models.CharField(name="description", max_length=1000, blank=True, null=True)
+    name = models.CharField(name="name", max_length=100, unique=True)
+    owned_by = models.ForeignKey(Author, name="owned_by", blank=True, null=True, on_delete=models.SET_NULL, related_name="stars")
+    azi = models.FloatField(name="azi", default=0)
+    pol = models.FloatField(name="pol", default=0)
+    dist = models.FloatField(name="dist", null=True, blank=True)
+    planets_number = models.IntegerField(name="planets_number")
+    spectral_type = models.CharField(name="spectral_type", max_length=100)
+    effective_temp = models.FloatField(name="effective_temp")
+    mass = models.FloatField(name="mass")
+    radius = models.FloatField(name="radius")
+    description = models.CharField(name="description", max_length=1000, blank=True, null=True)
 
     
 class Planet(models.Model):

@@ -39,7 +39,7 @@ class StarListView(generics.GenericAPIView):
 
     def get(self, request):
         stars = self.get_queryset()
-        serializer = serializers.StarDetailedGetSerializer(stars, many=True)
+        serializer = serializers.StarSimpleSerializer(stars, many=True)
         return Response({"stars":serializer.data}, status=status.HTTP_200_OK)
 
 
