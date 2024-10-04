@@ -69,4 +69,16 @@ class QuestGetSerializer(serializers.ModelSerializer):
 class QuestPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quest
-        fields = []
+        fields = [""]
+
+
+class PointsGetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = ["name", "points"]
+
+
+class PointsPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = ["points"]

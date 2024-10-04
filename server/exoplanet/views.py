@@ -159,3 +159,24 @@ class QuestCompleteView(generics.GenericAPIView):
         quest.completed = True
         quest.save()
         return Response(status=status.HTTP_200_OK)
+    
+
+class PointsView(generics.GenericAPIView):
+    serializer_class = serializers.PointsPostSerializer
+    def get_object(self, name):
+        return get_object_or_404(Author, name=name)
+    
+    def get(self, request, name):
+        author = self.get_object(name)
+        serializer = serializers.PointsGetSerializer(author)
+        return Response({"user": serializer.data}, status=status.HTTP_200_OK)
+    
+    def post(self, request, name):
+        author = self.get_object(name)
+        serializer = serializers.PointsGetSerializer(instance=author, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"user": serializer.data}, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        

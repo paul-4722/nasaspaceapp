@@ -14,6 +14,7 @@ def validate_string(str):
 class Author(models.Model):
     name = models.CharField(primary_key=True, max_length=100, unique=True, error_messages={ "unique": "Already used!" }, validators=[validate_string])
     password = models.CharField(name="password", max_length=100, blank=True, null=True)
+    points = models.IntegerField(name="points", default=0)
 
 
 class Star(models.Model):
