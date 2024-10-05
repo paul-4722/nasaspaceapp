@@ -18,7 +18,7 @@ class AuthorPostSerializer(serializers.ModelSerializer):
 class PlanetSimpleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Planet
-        fields = ["id", "name", "semimajor_axis", "eccentricity", "radius", "image"]
+        fields = ["id", "name", "semimajor_axis", "eccentricity", "radius", "image", "SType", "TType"]
 
 
 class PlanetDetailedGetSerializer(serializers.ModelSerializer):
