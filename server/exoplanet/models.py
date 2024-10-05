@@ -8,11 +8,11 @@ def validate_no_special_character(str):
         raise ValidationError("Special character not allowed!")
 
 def validate_string(str):
-    if(str.isdecimal()):
-        raise ValidationError("Should include at least one non-digit character.")
+    if len(str.split(" ")) > 1 or len(str) == 0:
+        raise ValidationError("No whitespace, and should include at least one letter")
 
 class Author(models.Model):
-    name = models.CharField(primary_key=True, max_length=100, unique=True, error_messages={ "unique": "Already used!" }, validators=[validate_string])
+    name = models.CharField(primary_key=True, max_length=100, unique=True, blank=False, null=False, error_messages={ "unique": "Already used!" }, validators=[validate_string])
     password = models.CharField(name="password", max_length=100, blank=True, null=True)
     points = models.IntegerField(name="points", default=0)
 

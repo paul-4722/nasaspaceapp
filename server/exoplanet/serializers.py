@@ -50,12 +50,6 @@ class StarDetailedGetSerializer(serializers.ModelSerializer):
         model = Star
         exclude = []
 
-class StarDetailedPostSerializer(serializers.ModelSerializer):
-    owned_by = AuthorPostSerializer()
-    class Meta:
-        model = Star
-        fields = ["owned_by"]
-
 
 class QuestGetSerializer(serializers.ModelSerializer):
     owned_by = AuthorSerializer()

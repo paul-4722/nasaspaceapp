@@ -26,7 +26,7 @@ class StarListView(generics.GenericAPIView):
 
 
 class StarDetailedView(generics.GenericAPIView):
-    serializer_class = serializers.StarDetailedPostSerializer
+    serializer_class = serializers.AuthorPostSerializer
     
     def get_object(self, pk):
         return get_object_or_404(Star, pk=pk)
@@ -49,12 +49,14 @@ class StarDetailedView(generics.GenericAPIView):
     
     def post(self, request, pk):
         star = self.get_object(pk)
-        user_name = request.data["owned_by.name"]
-        user_password = request.data["owned_by.password"]
+        user_name = request.data["name"]
+        user_password = request.data["password"]
         if star.owned_by:
             return Response({"message":"Cannot change owner of the star."}, status=status.HTTP_403_FORBIDDEN)
         else:
             if Author.objects.filter(name=user_name).count() == 0:
+                if len(user_name.split(" ")) > 1 or len(user_name) == 0:
+                    return Response(status=status.HTTP_404_NOT_FOUND)
                 Author.objects.create(name=user_name, password=user_password)
                 author = Author.objects.filter(name=user_name)[0]
                 serializer = serializers.StarDetailedGetSerializer(star, data=request.data, partial=True)
@@ -69,7 +71,6 @@ class StarDetailedView(generics.GenericAPIView):
 
 
 class StarDetailedViewByAuthor(generics.GenericAPIView):
-    serializer_class = serializers.StarDetailedPostSerializer
     
     def get_object(self, name):
         author = get_object_or_404(Author, name=name)
