@@ -18,7 +18,7 @@ class AuthorPostSerializer(serializers.ModelSerializer):
 class PlanetSimpleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Planet
-        fields = ["id", "name", "semimajor_axis", "eccentricity", "radius", "color", "image"]
+        fields = ["id", "name", "semimajor_axis", "eccentricity", "radius", "image"]
 
 
 class PlanetDetailedGetSerializer(serializers.ModelSerializer):
@@ -34,7 +34,7 @@ class PlanetDetailedGetSerializer(serializers.ModelSerializer):
 class PlanetDetailedPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Planet
-        fields = ["name", "image", "color", "semimajor_axis", "eccentricity", "mass", "radius", "magnetic_field", "albedo", "rotation_period", "atmospheric_pressure", "description"]
+        exclude = []
 
 
 class StarSimpleSerializer(serializers.ModelSerializer):

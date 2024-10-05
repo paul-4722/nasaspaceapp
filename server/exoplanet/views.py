@@ -14,24 +14,6 @@ class LandingView(generics.GenericAPIView):
         return Response(status=status.HTTP_200_OK)
 
 
-class PlanetListView(generics.GenericAPIView):
-    def get_queryset(self, option):
-        if option == "normal":
-            return Planet.objects.all()
-        elif option == "original":
-            return Planet.objects.filter(created_by_user=False)
-        elif option == "user":
-            return Planet.objects.filter(created_by_user=True)
-        else:
-            return None
-
-    def get(self, request, option):
-        planets = self.get_queryset(option)
-        if planets is not None:
-            serializer = serializers.PlanetDetailedGetSerializer(planets, many=True)
-            return Response({"planets":serializer.data}, status=status.HTTP_200_OK)
-        else:
-            return Response({"message":"Invalid option."}, status=status.HTTP_404_NOT_FOUND)
 
 class StarListView(generics.GenericAPIView):
     def get_queryset(self):

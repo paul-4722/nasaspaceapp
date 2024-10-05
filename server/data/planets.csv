@@ -1,4 +1,4 @@
-"","name","semimajor_axis","radius","mass","density","eccentricity","insolation","temprature","escape_vel","ESI","SType","TType","parent"
+"id","name","semimajor_axis","radius","mass","density","eccentricity","insolation","temperature","escape_vel","ESI","SType","TType","parent"
 "1","CoRoT-24 b",0.056,3.7,5.7,0.9,0,NA,1070,1.241185135,0.163092967,"N","H",1
 "2","CoRoT-24 c",0.098,5,28,1.3,0,NA,850,2.366431913,0.205160202,"N","H",1
 "3","EPIC 220674823 b",0.01326,1.725,8.21,8.77,0,4670,2300,2.181609564,0.086947438,"E","H",3

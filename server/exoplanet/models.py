@@ -19,19 +19,19 @@ class Author(models.Model):
 
 class Star(models.Model):
     name = models.CharField(name="name", max_length=100, unique=True)
-    owned_by = models.ForeignKey(Author, name="owned_by", blank=True, null=True, on_delete=models.SET_NULL, related_name="stars")
-    azi = models.FloatField(name="azi", default=0)
-    pol = models.FloatField(name="pol", default=0)
-    dist = models.FloatField(name="dist", null=True, blank=True)
     planets_number = models.IntegerField(name="planets_number")
     spectral_type = models.CharField(name="spectral_type", max_length=100, blank=True, null=True)
     effective_temp = models.FloatField(name="effective_temp", blank=True, null=True)
-    mass = models.FloatField(name="mass", blank=True, null=True)
     radius = models.FloatField(name="radius", blank=True, null=True)
+    mass = models.FloatField(name="mass", blank=True, null=True)
     luminosity = models.FloatField(name="luminosity", blank=True, null=True)
+    azi = models.FloatField(name="azi", default=0)
+    pol = models.FloatField(name="pol", default=0)
     visual_magnitude = models.FloatField(name="visual_magnitude", blank=True, null=True)
     habitable_min = models.FloatField(name="habitable_min", blank=True, null=True)
     habitable_max = models.FloatField(name="habitable_max", blank=True, null=True)
+    
+    owned_by = models.ForeignKey(Author, name="owned_by", blank=True, null=True, on_delete=models.SET_NULL, related_name="stars")
     description = models.CharField(name="description", max_length=1000, blank=True, null=True)
 
     
@@ -40,17 +40,18 @@ class Planet(models.Model):
     # data
     name = models.CharField(name="name", max_length=100)
     semimajor_axis = models.FloatField(name="semimajor_axis", blank=True, null=True)
-    eccentricity = models.FloatField(name="eccentricity", default=0)
-    mass = models.FloatField(name="mass", blank=True, null=True)
     radius = models.FloatField(name="radius", blank=True, null=True)
+    mass = models.FloatField(name="mass", blank=True, null=True)
     density = models.FloatField(name="density", blank=True, null=True)
+    eccentricity = models.FloatField(name="eccentricity", default=0)
     insolation = models.FloatField(name="insolation", blank=True, null=True)
     temperature = models.FloatField(name="temperature", blank=True, null=True)
-    escape_velocity = models.FloatField(name="escape_velocity", blank=True, null=True)
+    escape_vel = models.FloatField(name="escape_vel", blank=True, null=True)
     ESI = models.FloatField(name="ESI", blank=True, null=True)
     SType = models.CharField(name="SType", max_length=10)
     TType = models.CharField(name="TType", max_length=10)
     parent = models.ForeignKey(Star, name="parent", on_delete=models.CASCADE, related_name="planets")
+    
     description = models.CharField(name="description", max_length=1000, blank=True, null=True)
     
     # user
@@ -65,7 +66,6 @@ class Planet(models.Model):
     image = models.ImageField(blank=True, null=True)
     
     created_by_user = models.BooleanField(name="created_by_user", default=False)
-    color = models.CharField(name="color", max_length=100, default="black")
     
     
 class Quest(models.Model):
@@ -73,5 +73,6 @@ class Quest(models.Model):
     name = models.CharField(name="name", max_length=100)
     description = models.CharField(name="description", max_length=1000)
     owned_by = models.ForeignKey(Author, name="owned_by", on_delete=models.CASCADE) 
+    #points = models.IntegerField(name="points")
     completed = models.BooleanField(name="completed")
     
