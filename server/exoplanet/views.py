@@ -164,12 +164,14 @@ class PointsView(generics.GenericAPIView):
     
     def post(self, request, name):
         author = self.get_object(name)
-        serializer = serializers.PointsGetSerializer(instance=author, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"user": serializer.data}, status=status.HTTP_200_OK)
+        newpoint = author.points + int(request.data["points"])
+        serializer = serializers.PointsGetSerializer(author)
+        if newpoint < 0:
+            return Response(status=status.HTTP_403_FORBIDDEN)
         else:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            author.points = newpoint
+            author.save()
+            return Response({"user": serializer.data}, status=status.HTTP_200_OK)
 
 
 class AuthView(generics.GenericAPIView):

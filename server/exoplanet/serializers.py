@@ -51,7 +51,7 @@ class StarDetailedGetSerializer(serializers.ModelSerializer):
         exclude = []
 
 class StarDetailedPostSerializer(serializers.ModelSerializer):
-    owned_by = AuthorSerializer()
+    owned_by = AuthorPostSerializer()
     class Meta:
         model = Star
         fields = ["owned_by"]
