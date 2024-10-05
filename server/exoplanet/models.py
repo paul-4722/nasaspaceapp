@@ -9,7 +9,10 @@ def validate_no_special_character(str):
 
 def validate_string(str):
     if len(str.split(" ")) > 1 or len(str) == 0:
-        raise ValidationError("No whitespace, and should include at least one letter")
+        raise ValidationError("No whitespace, and should include at least one letter.")
+    if str.isdigit():
+        raise ValidationError("You should include at least one non-digit letter.")
+
 
 class Author(models.Model):
     name = models.CharField(primary_key=True, max_length=100, unique=True, blank=False, null=False, error_messages={ "unique": "Already used!" }, validators=[validate_string])

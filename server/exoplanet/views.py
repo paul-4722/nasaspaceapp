@@ -55,7 +55,7 @@ class StarDetailedView(generics.GenericAPIView):
             return Response({"message":"Cannot change owner of the star."}, status=status.HTTP_403_FORBIDDEN)
         else:
             if Author.objects.filter(name=user_name).count() == 0:
-                if len(user_name.split(" ")) > 1 or len(user_name) == 0:
+                if len(user_name.split(" ")) > 1 or len(user_name) == 0 or user_name.isdigit():
                     return Response(status=status.HTTP_404_NOT_FOUND)
                 Author.objects.create(name=user_name, password=user_password)
                 author = Author.objects.filter(name=user_name)[0]
