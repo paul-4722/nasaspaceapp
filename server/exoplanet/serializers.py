@@ -48,7 +48,7 @@ class StarDetailedGetSerializer(serializers.ModelSerializer):
     owned_by = AuthorSerializer()
     class Meta:
         model = Star
-        exclude = []
+        exclude = []    
 
 
 class QuestGetSerializer(serializers.ModelSerializer):

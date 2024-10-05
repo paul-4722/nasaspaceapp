@@ -59,13 +59,11 @@ class StarDetailedView(generics.GenericAPIView):
                     return Response(status=status.HTTP_404_NOT_FOUND)
                 Author.objects.create(name=user_name, password=user_password)
                 author = Author.objects.filter(name=user_name)[0]
-                serializer = serializers.StarDetailedGetSerializer(star, data=request.data, partial=True)
-                if serializer.is_valid():
-                    serializer.save(owned_by=author)
-                    self.make_quest(author)
-                    return Response({"star":serializer.data}, status=status.HTTP_202_ACCEPTED)
-                else:
-                    return Response(status=status.HTTP_404_NOT_FOUND)
+                self.make_quest(author)
+                star.owned_by = author
+                star.save()
+                serializer = serializers.StarDetailedGetSerializer(star)          
+                return Response({"star":serializer.data}, status=status.HTTP_202_ACCEPTED)
             else:
                 return Response({"message":"Already used name. "}, status=status.HTTP_403_FORBIDDEN)
 
