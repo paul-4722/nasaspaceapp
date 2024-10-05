@@ -46,6 +46,7 @@ class Planet(models.Model):
     image = models.ImageField(blank=True, null=True)
     description = models.CharField(name="description", max_length=1000, blank=True, null=True)
     created_by_user = models.BooleanField(name="created_by_user", default=False)
+    color = models.CharField(name="color", max_length=100, default="black")
     
     
 class Quest(models.Model):
