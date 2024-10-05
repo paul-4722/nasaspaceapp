@@ -59,6 +59,7 @@ class StarDetailedView(generics.GenericAPIView):
             Quest.objects.create(
                 name = quest["name"], 
                 description = quest["description"], 
+                number = quest["number"], 
                 owned_by = author, 
                 completed = False
             ) 

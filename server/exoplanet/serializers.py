@@ -69,7 +69,7 @@ class QuestGetSerializer(serializers.ModelSerializer):
 class QuestPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quest
-        fields = [""]
+        fields = []
 
 
 class PointsGetSerializer(serializers.ModelSerializer):
