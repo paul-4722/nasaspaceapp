@@ -29,8 +29,7 @@ class PlanetDetailedGetSerializer(serializers.ModelSerializer):
     parent = StarSerializer()
     class Meta:
         model = Planet
-        fields = ["id", "name", "parent", "owned_by", "created_by_user", "image", "color", "semimajor_axis", "eccentricity", "mass", "radius", "magnetic_field", "albedo", "rotation_period", "atmospheric_pressure", "description"]
-        
+        exclude = []        
         
 class PlanetDetailedPostSerializer(serializers.ModelSerializer):
     class Meta:
@@ -49,8 +48,7 @@ class StarDetailedGetSerializer(serializers.ModelSerializer):
     owned_by = AuthorSerializer()
     class Meta:
         model = Star
-        fields = ["name", "owned_by", "azi", "pol", "dist", "planets_number", "spectral_type", "effective_temp", "mass", "radius", "description", "planets"]
-
+        exclude = []
 
 class StarDetailedPostSerializer(serializers.ModelSerializer):
     owned_by = AuthorSerializer()
