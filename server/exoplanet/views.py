@@ -42,6 +42,7 @@ class StarDetailedView(generics.GenericAPIView):
                 name = quest["name"], 
                 description = quest["description"], 
                 number = quest["number"], 
+                points = quest["points"], 
                 owned_by = author, 
                 completed = False
             ) 
@@ -134,13 +135,20 @@ class QuestListView(generics.GenericAPIView):
 
 class QuestCompleteView(generics.GenericAPIView):
     serializer_class = serializers.QuestPostSerializer
-    def get_object(self, name, number):
+    def get_object_quest(self, name, number):
         return Quest.objects.get(owned_by=name, number=number)
+
+    def get_object_author(self, name):
+        return Author.objects.get(name=name)
     
     def post(self, request, name, number):
-        quest = self.get_object(name, number)
+        quest = self.get_object_quest(name, number)
         quest.completed = True
         quest.save()
+        author = self.get_object_author(name)
+        author.points += quest.points
+        author.save()
+        
         return Response(status=status.HTTP_200_OK)
     
 
@@ -162,4 +170,16 @@ class PointsView(generics.GenericAPIView):
             return Response({"user": serializer.data}, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        
+
+
+class AuthView(generics.GenericAPIView):
+    serializer_class = serializers.AuthorPostSerializer
+    def get_object(self, name):
+        return get_object_or_404(Author, name=name)
+    
+    def post(self, request):
+        author = self.get_object(request.data["name"])
+        if author.password == request.data["password"]:
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)

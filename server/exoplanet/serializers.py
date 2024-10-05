@@ -6,7 +6,7 @@ class AuthorSerializer(serializers.ModelSerializer):
     name = serializers.CharField(allow_null=True)
     class Meta:
         model = Author
-        fields = ["name", "password"]
+        fields = ["name"]
 
 
 class AuthorPostSerializer(serializers.ModelSerializer):

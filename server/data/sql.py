@@ -50,6 +50,6 @@ for i, row in star.iterrows():
 
 for i, row in planet.iterrows():
     cursor.execute(planet_sql%formatting(row, False))
-con.commit()    
+con.commit()
 
 con.close()

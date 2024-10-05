@@ -72,7 +72,7 @@ class Quest(models.Model):
     number = models.IntegerField(name="number")
     name = models.CharField(name="name", max_length=100)
     description = models.CharField(name="description", max_length=1000)
-    owned_by = models.ForeignKey(Author, name="owned_by", on_delete=models.CASCADE) 
-    #points = models.IntegerField(name="points")
+    owned_by = models.ForeignKey(Author, name="owned_by", on_delete=models.CASCADE)
+    points = models.IntegerField(name="points")
     completed = models.BooleanField(name="completed")
     

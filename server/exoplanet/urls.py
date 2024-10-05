@@ -13,6 +13,7 @@ urlpatterns = [
     path("quests/<str:name>/", views.QuestListView.as_view()), 
     path("quests/<str:name>/<int:number>/", views.QuestCompleteView.as_view()), 
     path("points/<str:name>/", views.PointsView.as_view()), 
+    path("auth/", views.AuthView.as_view()), 
 ]
 
 '''
