@@ -18,7 +18,7 @@ class LandingView(generics.GenericAPIView):
 
 class StarListView(generics.GenericAPIView):
     def get_queryset(self):
-        return Star.objects.all()
+        return Star.objects.filter(show=1)
 
     def get(self, request):
         stars = self.get_queryset()
@@ -134,7 +134,25 @@ class PlanetDetailedView(generics.GenericAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class PlanetRandomView(generics.GenericAPIView):
+class OriginStarRandomView(generics.GenericAPIView):
+    
+    def get_queryset(self):
+        stars = Star.objects.filter(show=0)
+        return stars
+    
+    def get_random(self, stars):
+        len = stars.count()
+        ran = random.randint(0, len-1)
+        return ran
+    
+    def get(self, request):
+        stars = self.get_queryset()
+        ran = self.get_random(stars)
+        serializer = serializers.StarSimpleSerializer(stars[ran])
+        return Response({"star":serializer.data})
+
+
+class UserStarRandomView(generics.GenericAPIView):
     
     def get_queryset(self, name):
         stars = Star.objects.filter(owned_by__isnull=False).exclude(owned_by__name=name)
@@ -150,7 +168,6 @@ class PlanetRandomView(generics.GenericAPIView):
     def get(self, request, name):
         stars = self.get_queryset(name)
         ran1, ran2 = self.get_random(stars)
-        print(ran1, ran2)
         serializer1 = serializers.StarSimpleSerializer(stars[ran1])
         serializer2 = serializers.StarSimpleSerializer(stars[ran2])
         return Response({"star1":serializer1.data, "star2":serializer2.data})

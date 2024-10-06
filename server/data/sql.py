@@ -9,11 +9,11 @@ con = sqlite3.connect('db.sqlite3')
 star_sql = """INSERT INTO exoplanet_star (
             id, name, planets_number, spectral_type, effective_temp, 
             radius, mass, luminosity, azi, pol, 
-            visual_magnitude, habitable_min, habitable_max
+            visual_magnitude, habitable_min, habitable_max, show
         ) VALUES (
             %s, "%s", %s, "%s", %s, 
             %s, %s, %s, %s, %s, 
-            %s, %s, %s
+            %s, %s, %s, %s
         )"""
 planet_sql = """INSERT INTO exoplanet_planet (
             id, name, semimajor_axis, radius, mass, 

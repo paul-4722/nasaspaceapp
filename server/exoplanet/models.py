@@ -37,6 +37,7 @@ class Star(models.Model):
     
     owned_by = models.ForeignKey(Author, name="owned_by", blank=True, null=True, on_delete=models.SET_NULL, related_name="stars")
     description = models.CharField(name="description", max_length=1000, blank=True, null=True)
+    show = models.IntegerField(name="show", default=1)
 
     
 class Planet(models.Model):
