@@ -4,7 +4,7 @@ quests = [
         "type": "selectStar", 
         "name": "Beginning of the Galactic Empire",
         "description": "Choose your own exoplanet system.", 
-        "points": 50, 
+        "points": 200, 
         "target": 1, 
     }, 
     
