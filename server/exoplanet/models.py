@@ -81,3 +81,5 @@ class Quest(models.Model):
     points = models.IntegerField(name="points")
     completed = models.BooleanField(name="completed")
     
+class Scenario(models.Model):
+    pass

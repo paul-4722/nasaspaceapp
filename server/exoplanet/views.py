@@ -6,6 +6,7 @@ from rest_framework.generics import get_object_or_404
 from .quests import quests
 from .models import Author, Star, Planet, Quest
 import exoplanet.serializers as serializers
+import random
 
 
 
@@ -131,6 +132,28 @@ class PlanetDetailedView(generics.GenericAPIView):
         star.save()
         planet.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class PlanetRandomView(generics.GenericAPIView):
+    
+    def get_queryset(self, name):
+        stars = Star.objects.filter(owned_by__isnull=False).exclude(owned_by__name=name)
+        return stars
+    
+    def get_random(self, stars):
+        len = stars.count()
+        ran1 = random.randint(0, len-1)
+        ran2 = random.randint(0, len-1)
+        while ran1 == ran2: ran2 = random.randint(0, len-1)
+        return (ran1, ran2)
+    
+    def get(self, request, name):
+        stars = self.get_queryset(name)
+        ran1, ran2 = self.get_random(stars)
+        print(ran1, ran2)
+        serializer1 = serializers.StarSimpleSerializer(stars[ran1])
+        serializer2 = serializers.StarSimpleSerializer(stars[ran2])
+        return Response({"star1":serializer1.data, "star2":serializer2.data})
 
 
 class QuestListView(generics.GenericAPIView):

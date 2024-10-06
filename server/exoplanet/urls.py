@@ -8,6 +8,7 @@ urlpatterns = [
     path("star/list/", views.StarListView.as_view()),
     path("star/<int:pk>/", views.StarDetailedView.as_view()), 
     path("star/<str:name>/", views.StarDetailedViewByAuthor.as_view()), 
+    path("star/random/<str:name>", views.PlanetRandomView.as_view()), 
     path("star/<int:pk>/create/", views.PlanetCreateView.as_view()), 
     path("planet/<int:pk>/", views.PlanetDetailedView.as_view()),
     path("quests/<str:name>/", views.QuestListView.as_view()), 
