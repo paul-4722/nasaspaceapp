@@ -114,10 +114,23 @@ class PlanetDetailedView(generics.GenericAPIView):
         planet = get_object_or_404(Planet, pk=pk)
         return planet
     
+    def get_object_star(self, id):
+        star = get_object_or_404(Star, pk=id)
+        return star
+    
     def get(self, request, pk):
         planet = self.get_object(pk)
         serializer = serializers.PlanetDetailedGetSerializer(planet)
         return Response({"planet":serializer.data}, status=status.HTTP_200_OK)
+    
+    def delete(self, request, pk):
+        planet = self.get_object(pk)
+        star_id = planet.parent.id
+        star = self.get_object_star(star_id)
+        star.planets_number -= 1
+        star.save()
+        planet.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class QuestListView(generics.GenericAPIView):

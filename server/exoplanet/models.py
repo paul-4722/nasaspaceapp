@@ -63,6 +63,7 @@ class Planet(models.Model):
     rotation_period = models.FloatField(name="rotation_period", blank=True, null=True)
     atmospheric_pressure = models.FloatField(name="atmospheric_pressure", blank=True, null=True)
     atmospheric_composition = models.CharField(name="atmospheric_composition", max_length=100, blank=True, null=True)
+    tilt = models.FloatField(name="tilt", default=0)
     
     
     owned_by = models.ForeignKey(Author, name="owned_by", blank=True, null=True, on_delete=models.SET_NULL, related_name="planets")

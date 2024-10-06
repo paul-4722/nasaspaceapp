@@ -25,7 +25,7 @@ class PlanetDetailedGetSerializer(serializers.ModelSerializer):
     class StarSerializer(serializers.ModelSerializer):
         class Meta:
             model = Star
-            fields = ["name"]
+            fields = ["id", "name"]
     parent = StarSerializer()
     class Meta:
         model = Planet
