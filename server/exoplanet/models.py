@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.exceptions import ValidationError
-from django.contrib.postgres.fields import ArrayField
 
 
 
@@ -20,7 +19,6 @@ class Author(models.Model):
     name = models.CharField(primary_key=True, max_length=100, unique=True, blank=False, null=False, error_messages={ "unique": "Already used!" }, validators=[validate_string])
     password = models.CharField(name="password", max_length=100, blank=True, null=True)
     points = models.IntegerField(name="points", default=0)
-    # scenarios = ArrayField(models.IntegerField(), null=True)
 
 
 class Star(models.Model):
