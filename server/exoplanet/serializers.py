@@ -34,7 +34,7 @@ class PlanetDetailedGetSerializer(serializers.ModelSerializer):
 class PlanetDetailedPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Planet
-        exclude = []
+        exclude = ["parent", "owned_by", "created_by_user"]
 
 
 class StarSimpleSerializer(serializers.ModelSerializer):
@@ -74,3 +74,15 @@ class PointsPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
         fields = ["points"]
+
+
+class ScenariosGetSerializer(serializers.ModelSerializer):
+    scenarios = serializers.ListField(child=serializers.IntegerField())
+
+    class Meta:
+        model = Author
+        fields = ["name", "scenarios"]
+
+
+class ScenariosPostSerializer(serializers.ModelSerializer):
+    scenario = serializers.IntegerField()

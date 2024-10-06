@@ -94,8 +94,10 @@ class PlanetCreateView(generics.GenericAPIView):
     def post(self, request, pk):
         star = self.get_object(pk)
         serializer = serializers.PlanetDetailedPostSerializer(data=request.data)
+        print(request.data)
         author = star.owned_by
         if author:
+            serializer.is_valid(raise_exception=True)
             if serializer.is_valid():
                 serializer.save(owned_by=author, parent=star, created_by_user=True)
                 star.planets_number += 1
@@ -197,3 +199,4 @@ class AuthView(generics.GenericAPIView):
             return Response(status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_403_FORBIDDEN)
+    

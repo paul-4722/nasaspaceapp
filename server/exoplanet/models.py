@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.exceptions import ValidationError
+from django.contrib.postgres.fields import ArrayField
+
 
 
 def validate_no_special_character(str):
@@ -18,6 +20,7 @@ class Author(models.Model):
     name = models.CharField(primary_key=True, max_length=100, unique=True, blank=False, null=False, error_messages={ "unique": "Already used!" }, validators=[validate_string])
     password = models.CharField(name="password", max_length=100, blank=True, null=True)
     points = models.IntegerField(name="points", default=0)
+    # scenarios = ArrayField(models.IntegerField(), null=True)
 
 
 class Star(models.Model):
@@ -46,7 +49,7 @@ class Planet(models.Model):
     radius = models.FloatField(name="radius", blank=True, null=True)
     mass = models.FloatField(name="mass", blank=True, null=True)
     density = models.FloatField(name="density", blank=True, null=True)
-    eccentricity = models.FloatField(name="eccentricity", default=0)
+    eccentricity = models.FloatField(name="eccentricity", blank=True, null=True, default=0)
     insolation = models.FloatField(name="insolation", blank=True, null=True)
     temperature = models.FloatField(name="temperature", blank=True, null=True)
     escape_vel = models.FloatField(name="escape_vel", blank=True, null=True)
@@ -63,7 +66,7 @@ class Planet(models.Model):
     rotation_period = models.FloatField(name="rotation_period", blank=True, null=True)
     atmospheric_pressure = models.FloatField(name="atmospheric_pressure", blank=True, null=True)
     atmospheric_composition = models.CharField(name="atmospheric_composition", max_length=100, blank=True, null=True)
-    tilt = models.FloatField(name="tilt", default=0)
+    tilt = models.FloatField(name="tilt", default=0, null=True)
     
     
     owned_by = models.ForeignKey(Author, name="owned_by", blank=True, null=True, on_delete=models.SET_NULL, related_name="planets")
