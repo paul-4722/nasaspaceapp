@@ -44,8 +44,10 @@ class StarDetailedView(generics.GenericAPIView):
                 description = quest["description"], 
                 number = quest["number"], 
                 points = quest["points"], 
+                type = quest["type"], 
+                target = quest["target"], 
+                progress = 0, 
                 owned_by = author, 
-                completed = False
             ) 
     
     def post(self, request, pk):
@@ -195,12 +197,8 @@ class QuestCompleteView(generics.GenericAPIView):
     
     def post(self, request, name, number):
         quest = self.get_object_quest(name, number)
-        quest.completed = True
+        quest.progress += 1
         quest.save()
-        author = self.get_object_author(name)
-        author.points += quest.points
-        author.save()
-        
         return Response(status=status.HTTP_200_OK)
     
 

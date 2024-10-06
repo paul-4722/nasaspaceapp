@@ -76,11 +76,13 @@ class Planet(models.Model):
     
 class Quest(models.Model):
     number = models.IntegerField(name="number")
+    type = models.CharField(name="type", max_length=100)
     name = models.CharField(name="name", max_length=100)
     description = models.CharField(name="description", max_length=1000)
     owned_by = models.ForeignKey(Author, name="owned_by", on_delete=models.CASCADE)
-    points = models.IntegerField(name="points")
-    completed = models.BooleanField(name="completed")
+    target = models.IntegerField(name="target")
+    progress = models.IntegerField(name="progress")
+    points = models.IntegerField(name="points", default=0)
     
 class Scenario(models.Model):
     pass

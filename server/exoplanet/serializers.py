@@ -55,7 +55,7 @@ class QuestGetSerializer(serializers.ModelSerializer):
     owned_by = AuthorSerializer()
     class Meta:
         model = Quest
-        fields = ["number", "name", "owned_by", "completed", "description"]
+        exclude = []
 
 
 class QuestPostSerializer(serializers.ModelSerializer):
