@@ -40,7 +40,7 @@ class PlanetDetailedPostSerializer(serializers.ModelSerializer):
 class StarSimpleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Star
-        fields = ["id", "name", "owned_by", "azi", "pol"]
+        fields = ["id", "name", "owned_by", "azi", "pol", "planets_number"]
 
 
 class StarDetailedGetSerializer(serializers.ModelSerializer):
