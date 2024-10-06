@@ -63,15 +63,6 @@ quests = [
     }, 
     
     {
-        "number": 7, 
-        "type": "helpClass", 
-        "name": "Planet Class Master",
-        "description": "Go to 'Help!' and learn the 15 planet classes (Temperature - Planet Radius Graph).", 
-        "points": 50, 
-        "target": 1, 
-    }, 
-    
-    {
         "number": 8, 
         "type": "createWarm", 
         "name": "Solid H₂O, Liquid CO₂",
